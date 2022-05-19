@@ -1,12 +1,4 @@
-//
-//  MenuTableViewController.swift
-//  OrderApp
-//
-//  Created by Rostyslav Shmorhun on 17.05.2022.
-//
-
 import UIKit
-
 
 class MenuTableViewController: UITableViewController {
     
@@ -28,15 +20,7 @@ class MenuTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = categoty.capitalized
-        
-        Task.init {
-            do {
-                let menuItems = try await MenuController.shared.fetchMenuItems(forCategory: categoty)
-                updateUI(with: menuItems)
-            } catch {
-                displayError(error, title: "Failed to Fetch Menu Items for \(self.categoty)")
-            }
-        }
+        canThrowErrors()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -57,6 +41,18 @@ class MenuTableViewController: UITableViewController {
     }
     
     //MARK: - Custom methods
+    
+    func canThrowErrors(){
+        Task.init {
+            do {
+                let menuItems = try await MenuController.shared.fetchMenuItems(forCategory: categoty)
+                updateUI(with: menuItems)
+            } catch {
+                displayError(error, title: "Failed to Fetch Menu Items for \(self.categoty)")
+            }
+        }
+    }
+    
     func updateUI(with menuItems: [MenuItem]) {
         self.menuItems = menuItems
         self.tableView.reloadData()
@@ -98,14 +94,13 @@ class MenuTableViewController: UITableViewController {
             }
         }
     }
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return menuItems.count
     }
     
@@ -115,9 +110,7 @@ class MenuTableViewController: UITableViewController {
         return cell
     }
     
-    //MARK: - Delegate
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         imageLoadTasks[indexPath]?.cancel()
     }
-    
 }

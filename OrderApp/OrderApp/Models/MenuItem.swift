@@ -10,7 +10,7 @@ struct MenuItem: Codable {
     var category: String
     var imageURL: URL
     
-    //MARK: - Enumerations
+    //MARK: - CodingKeys
     enum CodingKeys: String, CodingKey {
         case id
         case name

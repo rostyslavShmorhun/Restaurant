@@ -20,6 +20,7 @@ class MenuController {
             NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
         }
     }
+    
     static var orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
     
     //MARK: - Custom methods
@@ -82,6 +83,7 @@ class MenuController {
         let orderResponse = try decoder.decode(OrderResponse.self, from: data)
         return orderResponse.prepTime
     }
+    
     func fetchImage(from url: URL) async throws -> UIImage {
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let httpResponse = response as? HTTPURLResponse,
@@ -94,5 +96,3 @@ class MenuController {
         return image
     }
 }
-
-

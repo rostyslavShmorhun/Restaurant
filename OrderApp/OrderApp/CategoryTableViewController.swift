@@ -53,7 +53,6 @@ class CategoryTableViewController: UITableViewController {
         cell.contentConfiguration = content
     }
     
-    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -61,10 +60,8 @@ class CategoryTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return categories.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Category", for: indexPath)
@@ -72,4 +69,3 @@ class CategoryTableViewController: UITableViewController {
         return cell
     }
 }
-

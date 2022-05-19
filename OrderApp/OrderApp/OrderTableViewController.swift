@@ -34,6 +34,26 @@ class OrderTableViewController: UITableViewController {
         cell.contentConfiguration = content
     }
     
+    func uploadOrder() {
+        let menuIds = MenuController.shared.order.menuItems.map { $0.id }
+        Task.init {
+            do {
+                let minutesToPrepare = try await MenuController.shared.submitOrder(forMenuIDs: menuIds)
+                minutesToPrepareOrder = minutesToPrepare
+                performSegue(withIdentifier: "confirmOrder", sender: nil)
+            } catch {
+                displayError(title as! Error, title: "Order Submission Failed")
+            }
+        }
+    }
+    
+    func displayError(_ error: Error, title: String) {
+        guard let _ = viewIfLoaded?.window else { return }
+        let alert = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MenuController.shared.order.menuItems.count
@@ -55,9 +75,11 @@ class OrderTableViewController: UITableViewController {
             MenuController.shared.order.menuItems.remove(at: indexPath.row)
         }
     }
+    //MARK: - Action
     @IBSegueAction func confirmOrder(_ coder: NSCoder, sender: Any?) -> OrderConfirmationViewController? {
         return OrderConfirmationViewController(coder: coder, minutesToPrepare: minutesToPrepareOrder)
     }
+    
     @IBAction func unwindToOrderList(segue: UIStoryboardSegue) {
         if segue.identifier == "dismissConfirmation" {
             MenuController.shared.order.menuItems.removeAll()
@@ -79,25 +101,5 @@ class OrderTableViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         present(alertController, animated: true, completion: nil)
-    }
-    
-    func uploadOrder() {
-        let menuIds = MenuController.shared.order.menuItems.map { $0.id }
-        Task.init {
-            do {
-                let minutesToPrepare = try await MenuController.shared.submitOrder(forMenuIDs: menuIds)
-                minutesToPrepareOrder = minutesToPrepare
-                performSegue(withIdentifier: "confirmOrder", sender: nil)
-            } catch {
-                displayError(title as! Error, title: "Order Submission Failed")
-            }
-        }
-    }
-    
-    func displayError(_ error: Error, title: String) {
-        guard let _ = viewIfLoaded?.window else { return }
-        let alert = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
 }

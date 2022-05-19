@@ -14,7 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         let temporaryDirectory = NSTemporaryDirectory()
         let urlCache = URLCache(memoryCapacity: 25_000_000,
-                                diskCapacity: 50_000_000, diskPath: temporaryDirectory)
+                                diskCapacity: 50_000_000,
+                                diskPath: temporaryDirectory)
         URLCache.shared = urlCache
         return true
     }
@@ -32,7 +33,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-    
-    
 }
 

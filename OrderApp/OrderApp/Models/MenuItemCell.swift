@@ -1,6 +1,7 @@
 import UIKit
 
 class MenuItemCell: UITableViewCell {
+    
     //MARK: - Properties
     var itemName: String? = nil
     {

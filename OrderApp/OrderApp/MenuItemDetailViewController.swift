@@ -13,6 +13,12 @@ class MenuItemDetailViewController: UIViewController {
     @IBOutlet var addToOrderButton: UIButton!
     @IBOutlet var detailTextLabel: UILabel!
     
+    //MARK: - Life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateUI()
+    }
+    
     init?(coder: NSCoder, menuItem: MenuItem) {
         self.menuItem = menuItem
         super.init(coder: coder)
@@ -20,12 +26,6 @@ class MenuItemDetailViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Life cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateUI()
     }
     
     //MARK: - Custom methods
